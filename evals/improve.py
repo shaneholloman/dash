@@ -2,7 +2,7 @@
 Dash Self-Improvement Loop
 ==========================
 
-Runs smoke tests, analyzes failures with GPT-5.4, applies targeted
+Runs smoke tests, analyzes failures with GPT-5.6-sol, applies targeted
 improvements to instructions and knowledge, then re-runs to verify.
 
 Usage:
@@ -162,7 +162,7 @@ def get_improvement_plan(
     metrics_content: str,
     queries_content: str,
 ) -> ImprovementPlan:
-    """Call GPT-5.4 to analyze failures and suggest improvements."""
+    """Call GPT-5.6-sol to analyze failures and suggest improvements."""
     from openai import OpenAI
 
     client = OpenAI()
@@ -170,7 +170,7 @@ def get_improvement_plan(
     prompt = _build_analysis_prompt(results, instructions_content, metrics_content, queries_content)
 
     response = client.chat.completions.create(
-        model="gpt-5.4",
+        model="gpt-5.6-sol",
         messages=[
             {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": prompt},
@@ -339,7 +339,7 @@ def run_improvement_loop(
         queries_content = QUERIES_PATH.read_text() if QUERIES_PATH.exists() else ""
 
         # 4. Get improvement plan
-        print("  Analyzing failures with GPT-5.4...")
+        print("  Analyzing failures with GPT-5.6-sol...")
         plan = get_improvement_plan(before_results, instructions_content, metrics_content, queries_content)
 
         print("\n  Analysis:\n")
